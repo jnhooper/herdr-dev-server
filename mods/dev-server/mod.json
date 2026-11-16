@@ -1,0 +1,5 @@
+{
+  "place": "none",
+  "title": "Dev server",
+  "panel": { "label": "Server", "icon": "server.svg", "dot": "devserver.dot" }
+}

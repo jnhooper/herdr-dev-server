@@ -1,0 +1,53 @@
+{
+  "servers": [
+    {
+      "id": "rails",
+      "label": "Rails",
+      "port": 3000,
+      "url": "http://localhost:3000",
+      "command": "foreman start -f ./Procfile.dev -p 3000",
+      "requires": "Procfile.dev",
+      "prepare": [
+        {
+          "name": "gems",
+          "when": [
+            "Gemfile.lock"
+          ],
+          "run": "bundle check >/dev/null 2>&1 || bundle install"
+        },
+        {
+          "name": "npm",
+          "when": [
+            "package-lock.json"
+          ],
+          "run": "npm install"
+        }
+      ],
+      "migrate": "own-db",
+      "migrateCommand": "bin/rails db:migrate",
+      "database": {
+        "env": ".env.development.local",
+        "var": "DB_NAME",
+        "shared": "myapp_development",
+        "makeOwn": "wt dev-db"
+      }
+    },
+    {
+      "id": "storybook",
+      "label": "Storybook",
+      "port": 6006,
+      "url": "http://localhost:6006",
+      "command": "npm run storybook",
+      "requires": ".storybook",
+      "prepare": [
+        {
+          "name": "npm",
+          "when": [
+            "package-lock.json"
+          ],
+          "run": "npm install"
+        }
+      ]
+    }
+  ]
+}
